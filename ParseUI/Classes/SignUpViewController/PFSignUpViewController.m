@@ -23,6 +23,7 @@
 
 #import <Parse/PFConstants.h>
 #import <Parse/PFUser.h>
+#import <Parse/PFAnonymousUtils.h>
 
 #import "PFUIAlertView.h"
 #import "PFLocalization.h"
@@ -281,7 +282,13 @@ static NSString *const PFSignUpViewControllerDelegateInfoAdditionalKey = @"addit
         return;
     }
 
-    PFUser *user = [PFUser user];
+    PFUser *user = nil;
+	if ([PFUser currentUser] && [PFAnonymousUtils isLinkedWithUser:[PFUser currentUser]]) {
+		user = [PFUser currentUser];
+	}
+	else {
+		user = [PFUser user];
+	}   
     user.username = username;
     user.password = password;
 
